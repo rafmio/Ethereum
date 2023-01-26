@@ -1,0 +1,15 @@
+Ethereum - blockchain-based distributed platform and OS featuring smart contract (scripting) 
+functionality.
+
+Solidity - language for smart contracts
+
+go-ethereum == geth - most popular Ethereum client
+
+https://etherscan.io/ - веб-сайт для изучения и детализации данных, хранящихся в блокчейне
+Blocks are fundamental components of the blockchain.
+Block contains the data of all the transactions that have beed mined within the allocated block time.
+
+Swarm and Whisper
+Swarm - decentralized file storage as part of Ethereum. File storate protocol.
+Whisper - peer-to-peer messaging protocol.
+
