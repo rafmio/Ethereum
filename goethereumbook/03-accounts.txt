@@ -15,3 +15,11 @@ Can be executed by a computing system, sum as a suitable distributed ledger syst
 
 Ledger - an append-only record store, where records are immutable and may hold
 more general information than financial records
+
+https://ethereum.org/ru/developers/docs/accounts/
+Аккаунты имеют 16-ричный адрес из 42 символов
+Аккаунт не явлется кошельком.
+Аккаунт - это пара ключей для пользовательской
+учетной записи Ethereum.
+Кошелек - это интерфейс или приложение, которое позволяет вам взаимодействовать
+с вашим аккаунтом Ethereum
