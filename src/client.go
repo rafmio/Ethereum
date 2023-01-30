@@ -14,6 +14,7 @@ func main() {
   }
 
   fmt.Println("we have a connection")
+  fmt.Printf("Type of client: %T\n", client)
   _ = client
 }
 
