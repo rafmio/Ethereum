@@ -25,22 +25,12 @@ func CreateKeyStore(path string){
   fmt.Printf("Please enter your keyphrase: ")
   fmt.Scanf("%s\n", &keyphrase)
 
-  EncodeDecodeCheckPass(password, keyphrase)
+  passwordAESHash := EncodePassword(password, keyphrase)
 
-  password := "password"
-  account, err := key.NewAccount(password)
+  account, err := key.NewAccount(passwordAESHash)
   if err != nil {
     log.Fatal(err)
   }
-  fmt.Println(account.Address)
+  fmt.Println("The new account was created")
+  fmt.Println("Account address: ", account.Address)
 }
-
-
-// Initial code:
-//
-// password := "password"
-// account, err := key.NewAccount(password)
-// if err != nil {
-//   log.Fatal(err)
-// }
-// fmt.Println(account.Address)

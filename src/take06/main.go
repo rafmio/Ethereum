@@ -47,10 +47,12 @@ func main() {
     if err != nil {
       fmt.Println("Error occured: ", err.Error())
       } else {                                    // if files in path directory was found
-        fmt.Println("files: ", files)
+        fmt.Println("files: ", files)             // change to loop range []files
         if len(files) == 0 {                      // if directory is empty
           fmt.Println("Yes!")
         }
+        // If wallet files is exist - ask for password
+        AccessToWallet(walletFileName)
       }
   }
 
