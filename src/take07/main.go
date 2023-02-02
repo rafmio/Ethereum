@@ -43,8 +43,8 @@ func main() {
     files, err := os.ReadDir(path)
     fmt.Println("Searching for account files...")
     time.Sleep(time.Second * 1)
-    var walletFileNameByte []byte
-    var checkWalletIndex int
+    // var walletFileNameByte []byte
+    // var checkWalletIndex int
     var walletFileName string
 
     if err != nil {
@@ -58,13 +58,15 @@ func main() {
           for index, value := range files {
             fmt.Printf("%d - %s\n", index + 1, value)
           }
-
-          fmt.Printf("Enter the index of the wallet list: ")
-          fmt.Scanf("%d\n", checkWalletIndex)
-          walletFileNameByte = files[checkWalletIndex]
-          walletFileName = string(walletFileNameByte)
+          //
+          // fmt.Printf("Enter the index of the wallet list: ")
+          // fmt.Scanf("%d\n", checkWalletIndex)
+          // walletFileNameByte = files[1]
+          // walletFileName = string(walletFileNameByte)
         }
         // If wallet files is exist - ask for password
+        fmt.Printf("Enter the wallet's filename: ")
+        fmt.Scanf("%s\n", walletFileName)
         AccessToWallet(walletFileName)
       }
   }

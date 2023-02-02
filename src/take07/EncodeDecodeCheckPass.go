@@ -23,13 +23,15 @@ for encoding the password to AES
 func EncodePassword(password string, keyphrase string) string {
    keyFileName := "key.txt"
    passwordFileName := "password.txt"
+
    // Generating the hash sum (sha256) for keyphrase:
-   key256Hash := sha256.New()
-   key256Hash.Write([]byte(keyphrase))
+   key256Hash := sha256.New()             // return empty hash.Hash (interface)
+   key256Hash.Write([]byte(keyphrase))    //
+   key256HashString := key256Hash.String()
 
    // Storing the hash in the file
    // Write the keyphrase for separate place for security purposes
-   err := os.WriteFile(keyFileName, key256Hash, 0644)
+   err := os.WriteFile(keyFileName, []byte(key256HashString), 0644)
    if err != nil {
      log.Fatal(err)
    }
