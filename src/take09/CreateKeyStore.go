@@ -25,9 +25,9 @@ func CreateKeyStore(path string) {
 	fmt.Printf("Please enter your keyphrase: ")
 	fmt.Scanf("%s\n", &keyphrase)
 
-	passwordAESHash := EncodePassword(password, keyphrase)
+	EncodePassword(password, keyphrase)
 
-	account, err := key.NewAccount(passwordAESHash)
+	account, err := key.NewAccount(password)
 	if err != nil {
 		log.Fatal(err)
 	}

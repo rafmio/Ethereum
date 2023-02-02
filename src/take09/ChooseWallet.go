@@ -8,8 +8,8 @@ import (
 )
 
 func ChooseWallet(path string) {
-	var answer string
-	correctScanMarker := 1
+	var fileIndex int
+	correctScanMarker := int(1)
 	minimalRangeValue := 1
 
 	files, err := os.ReadDir(path)
@@ -26,12 +26,12 @@ func ChooseWallet(path string) {
 			fmt.Printf("index: %d - name: %s\n", index + 1, value.Name())
 		}
 		fmt.Printf("Please choose the wallet file's index (1 - %d): ", len(files))
-		checkAnswer, _ := fmt.Scanf("%d\n", &answer)
-		if checkAnswer != correctScanMarker || answer < minimalRangeValue || answer > len(files) {
+		checkAnswer, _ := fmt.Scanf("%d\n", &fileIndex)
+		if checkAnswer != correctScanMarker || fileIndex < minimalRangeValue || fileIndex > len(files) {
 			fmt.Println("Incorrect input")
 			os.Exit(1)
 		} else {
-			AccessToWallet(files[answer].Name())
+			AccessToWallet(files[fileIndex].Name())
 		}
 	}
 }

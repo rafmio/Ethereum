@@ -2,15 +2,8 @@ package main
 
 import (
 	"crypto/aes"
-	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"log"
-	"os"
-
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/crypto"
 )
 
 // Function for generating the hash sum (AES) for password
@@ -27,7 +20,7 @@ func Encrypt(key256Hash []byte, password string) string {
 }
 
 // Function for decrypt password-key - reverse
-func Decrypt(keyByte []byte, passwordStr string) []byte {
+func Decrypt(keyByte []byte, passwordStr string) string {
 	// Convert password from string to []byte:
 	passwordByte, _ := hex.DecodeString(passwordStr)
 
@@ -45,5 +38,5 @@ func Decrypt(keyByte []byte, passwordStr string) []byte {
 	s := string(plain[:])
 	fmt.Printf("AES Decrypyed Text:  %s\n", s)
 
-	return keyByteCipherBlock
+	return string(plain)
 }

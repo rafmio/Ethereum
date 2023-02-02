@@ -2,12 +2,16 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"log"
+
+	"github.com/ethereum/go-ethereum/accounts/keystore"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 // Function for accessing to wallet
 func AccessToWallet(walletFileName string) {
-	keyFileName := "key.txt"
-	passwordFileName := "password.txt"
 
 	// Reading wallet file
 	walletFile, err := os.ReadFile(walletFileName)
@@ -19,25 +23,10 @@ func AccessToWallet(walletFileName string) {
 	var password string
 	fmt.Scanf("%s\n", password)
 
-
-	// Reading key file
-	keyByte, err := os.ReadFile(keyFileName)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Reading password file
-	passwordByte, err := os.ReadFile(passwordFileName)
-	if err != nil {
-		log.Fatal(err)
-	}
-	passwordStr := string(passwordByte[:])
-
-	// Decoding original password from file
-	passwordDecryptedByte := Decrypt(keyByte, passwordStr) // <=======================
-	passwordDecryptedStr := string(passwordDecryptedByte)
-	if passwordDecryptedStr != password {
-		fmt.Println("Incorrect password")
+	checkPasswordResult := CheckPassword(password)
+	if checkPasswordResult == false {
+		fmt.Println("The password is incorrect")
+		os.Exit(1)
 	}
 
 	key, err := keystore.DecryptKey(walletFile, password)

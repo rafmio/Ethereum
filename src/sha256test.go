@@ -1,18 +1,18 @@
 package main
 
 import (
-  "crypto/sha256"
-  "fmt"
+    "fmt"
+    "crypto/sha1"
+    "encoding/hex"
 )
 
 func main() {
-  h := sha256.New()
-  h.Write([]byte("this is a password"))
-  fmt.Printf("%x\n", h.Sum(nil))
-  fmt.Printf("Type of h: %T\n", h)
 
-  retVal := h.Sum(nil)
-  fmt.Println(retVal)
-  fmt.Printf("Type of retVal: %T\n", retVal)
-  fmt.Println(string(retVal))
+    s := "sha1 this string"
+    h := sha1.New()
+    h.Write([]byte(s))
+    sha1_hash := hex.EncodeToString(h.Sum(nil))
+
+    fmt.Println(s, sha1_hash)
+    fmt.Printf("Type of sha1_hash: %T\n", sha1_hash)
 }
