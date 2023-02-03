@@ -26,7 +26,7 @@ func EncodePassword(password string) {
 	time.Sleep(time.Second * 1)
 
 	// Generating random keyphrase:
-	keyphraseByte := make([]byte, 32)
+	keyphraseByte := make([]byte, 16)
 	if lenkp, err := rand.Read(keyphraseByte);err != nil {
 		panic(err.Error())
 

@@ -9,7 +9,7 @@ import (
 // Function for generating the hash sum (AES) for password
 func EncryptAES(keyphraseByte []byte, password string) string {
 	fmt.Println("len(keyphrase): ", len(keyphraseByte))
-	
+
 	c, err := aes.NewCipher(keyphraseByte)
 	if err != nil {
 		fmt.Errorf("NewCipher(%d bytes) = %s", len(keyphraseByte), err)

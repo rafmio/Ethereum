@@ -1,47 +1,68 @@
+// https://appdividend.com/2019/12/05/golang-encryption-decryption-example-aes-encryption-in-go/
 package main
+import (
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/rand"
+	"fmt"
+	"io"
+	"io/ioutil"
+)
+func main() {
+	text := []byte("Mandalorian is currently the best DisneyPlus show")
+	key := []byte("TZPtSIacEJG18IpqQSkTE6luYmnCNKgR")
+	cphr, err := aes.NewCipher(key)
+	if err != nil {
+		fmt.Println(err)
+	}
+	gcm, err := cipher.NewGCM(cphr)
+	if err != nil {
+		fmt.Println(err)
+	}
+	nonce := make([]byte, gcm.NonceSize())
+	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
+		fmt.Println(err)
+	}
+	err = ioutil.WriteFile("app.txt", gcm.Seal(nonce, nonce, text, nil), 0644)
+	if err != nil {
+		fmt.Println(err)
+	}
 
- import (
-   "fmt"
-   "crypto/aes"
-   "crypto/cipher"
- )
+  decryptAES(key)
+}
 
- func main() {
-    //The key argument should be the AES key, either 16, 24, or 32 bytes to select AES-128, AES-192, or AES-256.
-    key := "opensesame123456" // 16 bytes!
+func decryptAES(key []byte) {
+  ciphertext, err := ioutil.ReadFile("app.txt")
+  if err != nil {
+    fmt.Println(err)
+  }
+  c, err := aes.NewCipher(key)
+  if err != nil {
+    fmt.Println(err)
+  }
 
-    block,err := aes.NewCipher([]byte(key))
+  gcmDecrypt, err := cipher.NewGCM(c)
+  if err != nil {
+    fmt.Println(err)
+  }
 
-    if err != nil {
-      panic(err)
-    }
+  nonceSize := gcmDecrypt.NonceSize()
+  if len(ciphertext) < nonceSize {
+    fmt.Println(err)
+  }
 
-    fmt.Printf("%d bytes NewCipher key with block size of %d bytes\n", len(key), block.BlockSize)
+  nonce, encryptedMessage := ciphertext[:nonceSize], ciphertext[nonceSize :]
+  plaintext, err := gcmDecrypt.Open(nil, nonce, encryptedMessage, nil)
+  if err != nil {
+    fmt.Println(err)
+  }
 
-    str := []byte("Hello World!")
+  fmt.Printf("Type of plaintext is : %T\n", plaintext)
+  fmt.Println(string(plaintext))
 
-    // 16 bytes for AES-128, 24 bytes for AES-192, 32 bytes for AES-256
-    ciphertext := []byte("abcdef1234567890")
-    iv := ciphertext[:aes.BlockSize] // const BlockSize = 16
-
-
-    // encrypt
-
-    encrypter := cipher.NewCFBEncrypter(block, iv)
-
-    encrypted := make([]byte, len(str))
-    encrypter.XORKeyStream(encrypted, str)
-
-    fmt.Printf("%s encrypted to %v\n", str, encrypted)
-
-    // decrypt
-
-    decrypter := cipher.NewCFBDecrypter(block, iv) // simple!
-
-    decrypted := make([]byte, len(str))
-    decrypter.XORKeyStream(decrypted, encrypted)
-
-    fmt.Printf("%v decrypt to %s\n", encrypted, decrypted)
-
-
- }
+  if string(plaintext) != "Mandalorian is currently the best DisneyPlus show" {
+    fmt.Println("Fail!")
+  } else {
+    fmt.Println("GOTCHA!!!")
+  }
+}
