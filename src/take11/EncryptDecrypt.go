@@ -1,16 +1,25 @@
-// https://appdividend.com/2019/12/05/golang-encryption-decryption-example-aes-encryption-in-go/
 package main
+
 import (
+	"fmt"
+	// "math/rand"
+	"io/ioutil"
+	"io"
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
-	"fmt"
-	"io"
-	"io/ioutil"
 )
-func main() {
-	text := []byte("Mandalorian is currently the best DisneyPlus show")
+
+func EncryptAES(password string) {
+	passwordFileName := "password.txt"
+	// keyFileName := "key.txt"
 	key := []byte("TZPtSIacEJG18IpqQSkTE6luYmnCNKgR")
+	// err := os.WriteFile(keyFileName, key, 0644)
+	// if err != nil {
+	// 	fmt.Println("writing to file: ", err.Error())
+	// 	os.Exit(1)
+	// }
+
 	cphr, err := aes.NewCipher(key)
 	if err != nil {
 		fmt.Println(err)
@@ -23,16 +32,14 @@ func main() {
 	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
 		fmt.Println(err)
 	}
-	err = ioutil.WriteFile("app.txt", gcm.Seal(nonce, nonce, text, nil), 0644)
+	err = ioutil.WriteFile(passwordFileName, gcm.Seal(nonce, nonce, []byte(password), nil), 0644)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("writing to file: ", err.Error())
 	}
-
-  decryptAES(key)
 }
 
-func decryptAES(key []byte) {
-  ciphertext, err := ioutil.ReadFile("app.txt")
+func DecryptAES(key []byte, passwordFileName string) string {
+  ciphertext, err := ioutil.ReadFile(passwordFileName)
   if err != nil {
     fmt.Println(err)
   }
@@ -57,12 +64,5 @@ func decryptAES(key []byte) {
     fmt.Println(err)
   }
 
-  fmt.Printf("Type of plaintext is : %T\n", plaintext)
-  fmt.Println(string(plaintext))
-
-  if string(plaintext) != "Mandalorian is currently the best DisneyPlus show" {
-    fmt.Println("Fail!")
-  } else {
-    fmt.Println("GOTCHA!!!")
-  }
+	return string(plaintext)
 }
