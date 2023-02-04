@@ -29,11 +29,10 @@ func CreateKeyStore() {
 	if err != nil {
 		fmt.Println("creating a new account: ", err.Error())
 	} else {
+    printMenu()
     fmt.Println("The new account was created")
     fmt.Println("Account address: ", account.Address)
   }
 
-  time.Sleep(time.Second)
-  printMenu()
   chooseAction()
 }

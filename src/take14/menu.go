@@ -20,7 +20,7 @@ func printMenu() {
 	for _, value := range menu {
 		fmt.Println(value)
 	}
-	for i := 0; i < 8; i++ {
+	for i := 0; i < 5; i++ {
 		fmt.Println("\n")
 	}
 }

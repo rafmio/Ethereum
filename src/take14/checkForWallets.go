@@ -18,4 +18,5 @@ func CheckForWallets(files []os.DirEntry) {
 			fmt.Printf("index: %d - name: %s\n", index + 1, value.Name())
 		}
 	}
+	chooseAction()
 }
