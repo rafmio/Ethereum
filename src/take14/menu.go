@@ -34,15 +34,15 @@ func chooseAction() {
 
 	for {
 		checkAction, _ = fmt.Scanf("%d\n", &action)
-		if checkAction != correctScanMarker || action > len(menu) - 1 || action < 0 {
+		if checkAction != correctScanMarker || action > len(menu)-1 || action < 0 {
 			printMenu()
 			fmt.Println("Incorrect input. Pleace enter the menu's item")
 		} else {
 			switch action {
 			case 1:
-				checkForWallets()
+				CheckForKeystore()
 			case 2:
-				fmt.Println("Creating a new wallet")
+				CreateKeyStore()
 			case 3:
 				fmt.Println("Access to wallet")
 			case 4:
