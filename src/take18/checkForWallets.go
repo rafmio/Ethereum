@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"time"
 	"os"
+	"time"
 )
 
 func CheckForWallets(files []os.DirEntry) {
@@ -21,7 +21,7 @@ func CheckForWallets(files []os.DirEntry) {
 		fmt.Println("The following files were found:")
 		printMenu()
 		for index, value := range files {
-			fmt.Printf("index: %d - name: %s\n", index + 1, value.Name())
+			fmt.Printf("index: %d - name: %s\n", index+1, value.Name())
 		}
 	}
 
@@ -32,9 +32,9 @@ func CheckForWallets(files []os.DirEntry) {
 		if checkAnswer != correctScanMarker || fileIndex < minimalRangeValue || fileIndex > len(files) {
 			fmt.Printf("Incorrect input. Please choose the wallet file's index (1 - %d): ", len(files))
 		} else {
-			walletFileName := path + "/" + files[fileIndex - 1].Name()
+			walletFileName := path + "/" + files[fileIndex-1].Name()
 			AccessToWallet(walletFileName)
-			// fmt.Println("Call AccessToWallet() function!")
+			
 			printMenu()
 			chooseAction()
 		}

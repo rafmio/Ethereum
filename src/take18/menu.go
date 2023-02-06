@@ -13,16 +13,12 @@ func printMenu() {
 		"4 - Delete wallet",
 		"0 - Exit the program",
 	}
-	// for i := 0; i < 2; i++ {
-	// 	fmt.Println("\n")
-	// }
+
 	fmt.Printf("\nMENU\n")
 	for _, value := range menu {
 		fmt.Println(value)
 	}
-	// for i := 0; i < 2; i++ {
-	// 	fmt.Println("\n")
-	// }
+	fmt.Println()
 }
 
 func chooseAction() {
