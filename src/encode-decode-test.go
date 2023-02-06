@@ -11,7 +11,7 @@ var key []byte = []byte("TZPtSIacEJG18IpqQSkTE6luYmnCNKgR")
 
 func main() {
   // address := "230930hd209uh2309uhr2093h4093h20"
-  password := "password32842300"
+  password := "password00000002"
   EncryptAES(password)
   DecryptAES()
 }
