@@ -2,10 +2,12 @@ package main
 
 import (
 	"crypto/aes"
-	"encoding/hex"
 	"encoding/json"
+	"crypto/cipher"
+	"crypto/rand"
 	"fmt"
 	"os"
+	"io"
 )
 
 var key []byte = []byte("TZPtSIacEJG18IpqQSkTE6luYmnCNKgR")
@@ -19,16 +21,22 @@ var Entries []AccountEntry
 var passwordsFile string = "passwords.json"
 
 func EncryptAES(password string, accAddr string) {
-	fmt.Println("Now let's encrypt our password to AES")
+	fmt.Println("Let's encrypt the password")
 	ciphBlock, err := aes.NewCipher(key)
-	if err != nil {
-		fmt.Println("creating cipher block: ", err.Error())
-	}
-	encryptedAESPassword := make([]byte, len(password))
-	ciphBlock.Encrypt(encryptedAESPassword, []byte(password))
+		if err != nil {
+			fmt.Println("creating the cipher block: ", err)
+		}
+		gcm, err := cipher.NewGCM(ciphBlock)
+		if err != nil {
+			fmt.Println("wrape the AES in Galios Counter Mode: ", err)
+		}
+		nonce := make([]byte, gcm.NonceSize())
+		if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
+			fmt.Println("reading bytes: ", err)
+		}
 
-	fmt.Println("encryptedAESPassword ([]byte): ", encryptedAESPassword)
-	fmt.Println("encryptedAESPassword (string): ", hex.EncodeToString(encryptedAESPassword))
+		encryptedAESPassword := gcm.Seal(nonce, nonce, []byte(password), nil)
+		fmt.Println("Password was encrypted to AES")
 
 	EncodeJSON(encryptedAESPassword, accAddr)
 }

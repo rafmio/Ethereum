@@ -33,13 +33,10 @@ func CreateKeyStore() {
     fmt.Println("Account address: ", account.Address)
 		accAddr = account.Address.String() // to del
 		fmt.Printf("Type of accAddr: %T\n", accAddr) // common.Address
-		// for _, value := range key.Accounts() { // to del
-		// 	fmt.Println(value)
-		// }
+		EncryptAES(password, accAddr)
+		// fmt.Println("Here we call EncryptAES() function")
   }
 
-	EncryptAES(password, accAddr)
-	// fmt.Println("Here we call EncryptAES() function")
 
   chooseAction()
 }
