@@ -30,9 +30,9 @@ func CheckForWallets(files []os.DirEntry) {
 		if checkAnswer != correctScanMarker || fileIndex < minimalRangeValue || fileIndex > len(files) {
 			fmt.Printf("Incorrect input. Please choose the wallet file's index (1 - %d): ", len(files))
 		} else {
-			// walletFileName := path + "/" + files[fileIndex - 1].Name()
-			// AccessToWallet(walletFileName)
-			fmt.Println("Call AccessToWallet() function!")
+			walletFileName := path + "/" + files[fileIndex - 1].Name()
+			AccessToWallet(walletFileName)
+			// fmt.Println("Call AccessToWallet() function!")
 			printMenu()
 			chooseAction()
 		}

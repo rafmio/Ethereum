@@ -10,18 +10,18 @@ import (
 	"io"
 )
 
-var key []byte = []byte("TZPtSIacEJG18IpqQSkTE6luYmnCNKgR")
+// var key []byte = []byte("TZPtSIacEJG18IpqQSkTE6luYmnCNKgR")
 
-type AccountEntry struct {
-	Wallet   string
-	Password []byte
-}
+// type AccountEntry struct {
+// 	Wallet   string
+// 	Password []byte
+// }
 
-var Entries []AccountEntry
-var passwordsFile string = "passwords.json"
+// var Entries []AccountEntry
+// var passwordsFile string = "passwords.json"
 
 func EncryptAES(password string, accAddr string) {
-	fmt.Println("Let's encrypt the password")
+	fmt.Println("Let's encrypt AES-password for wallet's address: ", accAddr)
 	ciphBlock, err := aes.NewCipher(key)
 		if err != nil {
 			fmt.Println("creating the cipher block: ", err)
