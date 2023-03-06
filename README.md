@@ -1,21 +1,26 @@
-Etherium test
-Создать CLI приложение
+Etherium Contracts Application
 
-Используемое (примеры):
+Create application
+
+Examples of packages used:
 - https://goethereumbook.org/en/
 - https://pkg.go.dev/crypto/sha256
 - https://pkg.go.dev/crypto/aes
 
-Сделать CLI
-При запуске приложение:
-	- проверяет наличие аккаунтов
-	- если есть  - просит пароль
-	- если нет 	 - просит его создать
+Develop an application
+When launching the application:	
+	- check for existing accounts	
+	- if it is exists - then request a password
+	- if it is not exists - then request to create it
 
-Аккаунт == созданный кошелек
-Пароль нужно хранить в файле
-Пароль нужно держать в виде хэша, чтоб при получении можно было сравнить с хэшем
+Account  == just created wallet
+The password must be stored at PostgreSQL database
+The password must be stored as a hash
 
+
+Creating account (wallet) - Issue #1
+
+Optional:
 Данные в файле с хэшем нужно шифровать с использованием AES.
 Ключ для шифрования может быть захардкоденным
 
