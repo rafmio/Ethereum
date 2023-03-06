@@ -30,11 +30,9 @@ func CreateKeyStore() {
 		fmt.Println("Account address: ", account.Address)
 		accAddr = account.Address.String()
 		fmt.Println()
-		
+
 		EncryptAES(password, accAddr)
 
 	}
 
-	printMenu()
-	chooseAction()
 }
