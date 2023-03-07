@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"os"
+
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 type AccountEntry struct {
@@ -14,7 +16,8 @@ type AccountEntry struct {
 func ConnectDB(entry AccountEntry) {
 	fmt.Println("connection to database")
 	// assing URL of DB to the variable
-	databaseUrl := "postgres://postgres:qwq121@localhost:5432/postgres"
+	// databaseURL := "postgres://postgres:qwq121@localhost:5433/postgres"
+	databaseURL := "postgres://postgres:qwq121@localhost:5432/ethcontract"
 
 	// establish a connection with specified DB
 	dbPool, err := pgxpool.Connect(context.Background(), databaseURL)
@@ -26,7 +29,7 @@ func ConnectDB(entry AccountEntry) {
 	defer dbPool.Close()
 
 	// execute insert query
-	ExecuteInsertQuery(dbPool)
+	ExecuteInsertAccountQuery(dbPool, entry)
 }
 
 func ExecuteInsertAccountQuery(dbPool *pgxpool.Pool, entry AccountEntry) {
@@ -38,4 +41,6 @@ func ExecuteInsertAccountQuery(dbPool *pgxpool.Pool, entry AccountEntry) {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error inserting data to DB", err)
 	}
+
+	fmt.Println("wrote: ", rows)
 }
