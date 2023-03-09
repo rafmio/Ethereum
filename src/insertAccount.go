@@ -3,44 +3,38 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 
-	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/jackc/pgx/v4"
 )
 
 type AccountEntry struct {
-	AccNumber string // 40 symbols
-	Password  string // 256 symbols
+	AccNumber string
+	Password  string
 }
 
-func ConnectDB(entry AccountEntry) {
-	fmt.Println("connection to database")
-	// assing URL of DB to the variable
-	// databaseURL := "postgres://postgres:qwq121@localhost:5433/postgres"
-	databaseURL := "postgres://postgres:qwq121@localhost:5432/ethcontract"
-
-	// establish a connection with specified DB
-	dbPool, err := pgxpool.Connect(context.Background(), databaseURL)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "unable to connect to database: %v\n", err)
-		os.Exit(1)
-	}
-
-	defer dbPool.Close()
-
-	// execute insert query
-	ExecuteInsertAccountQuery(dbPool, entry)
-}
-
-func ExecuteInsertAccountQuery(dbPool *pgxpool.Pool, entry AccountEntry) {
-	fmt.Println("starting executing of insert query")
+func InsertAccount(conn *pgx.Conn, entry AccountEntry) {
 	acc := entry.AccNumber
 	psw := entry.Password
-	SQLQuery := fmt.Sprintf("INSERT INTO accounts (accnumber, password) VALUES('%s', '%s');", acc, psw)
-	rows, err := dbPool.Query(context.Background(), SQLQuery)
+
+	query := fmt.Sprintf("INSERT INTO accounts (accnumber, password) VALUES('%s', '%s');",
+		acc,
+		psw,
+	)
+
+	_, err := conn.Exec(context.Background(), query)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "error inserting data to DB", err)
+		fmt.Println("adding entry: ", err.Error())
+	} else {
+		fmt.Println("adding entry: Success")
 	}
 
-	fmt.Println("wrote: ", rows)
+	err = conn.Close(context.Background())
+	if err != nil {
+		fmt.Println("closing connection: ", err.Error())
+	} else {
+		fmt.Println("closing connection: Success")
+	}
+
+	defer conn.Close(context.Background())
+	fmt.Println("Database connection closed")
 }
