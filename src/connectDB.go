@@ -35,8 +35,8 @@ var ConnConf ConnectionConfig = ConnectionConfig{
 	DBMS:        "postgresql",
 	User:        "postgres",
 	Password:    "qwq121",
-	NetLocation: "localhost",
-	Port:        "5432",
+	NetLocation: "194.58.102.129",
+	Port:        "9432",
 	DBName:      "ethcontract",
 	Param:       "sslmode=disable",
 }

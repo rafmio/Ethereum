@@ -7,8 +7,8 @@ import (
 
 func main() {
 	// Hardcoded account number and AES encoded password
-	accountNumber := "0003434934"
-	AESPassword := "5t6vdd5t58t576rf8547773e4rt759rf8dd5t78t594870gh4"
+	accountNumber := "1114949863"
+	AESPassword := "24evf7ff88t576rf854ere34r4t759rf8dd5t78t5948707t4"
 
 	// Assign to struct variable values of account number and password
 	var newAccount = AccountEntry{AccNumber: accountNumber, Password: AESPassword}
