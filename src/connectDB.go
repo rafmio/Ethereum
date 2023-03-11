@@ -55,7 +55,6 @@ func EstablishConnectionDB() (*pgx.Conn, error) {
 	} else {
 		fmt.Println("connection to database: Success")
 	}
-	// defer conn.Close(context.Background())
 
 	return conn, err
 }
