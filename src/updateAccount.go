@@ -7,20 +7,20 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-func UpdateAccount(conn *pgx.Conn, entry AccountEntry) {
+func UpdatePassword(conn *pgx.Conn, entry AccountEntry) {
 	acc := entry.AccNumber
 	psw := entry.Password
 
-	query := fmt.Sprintf("INSERT INTO accounts (accnumber, password) VALUES('%s', '%s');",
-		acc,
+	query := fmt.Sprintf("UPDATE accounts SET password = '%s' where accnumber = '%s';",
 		psw,
+		acc,
 	)
 
 	_, err := conn.Exec(context.Background(), query)
 	if err != nil {
-		fmt.Println("adding entry: ", err.Error())
+		fmt.Println("updating entry: ", err.Error())
 	} else {
-		fmt.Println("adding entry: Success")
+		fmt.Println("updating entry: Success")
 	}
 
 	err = conn.Close(context.Background())
