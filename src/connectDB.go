@@ -42,6 +42,8 @@ var ConnConf ConnectionConfig = ConnectionConfig{
 }
 
 func EstablishConnectionDB() (*pgx.Conn, error) {
+	fmt.Println("establishing connection to database...")
+	
 	config, err := pgx.ParseConfig(ConnConf.GetConnString())
 	if err != nil {
 		fmt.Println("parsing config: ", err.Error())

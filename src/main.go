@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"math/rand"
 	"os"
@@ -8,22 +9,7 @@ import (
 )
 
 func main() {
-	// Hardcoded account number and AES encoded password
-	accountNumber := "8437948432"
-	AESPassword := "245t57ff88tdfdrf854edfr4r4t75sdf8dd5t78t5948708r4"
-
-	// Assign to struct variable values of account number and password
-	var newAccount = AccountEntry{AccNumber: accountNumber, Password: AESPassword}
-
-	// Connecting to DB
-	conn, err := EstablishConnectionDB()
-	if err != nil {
-		fmt.Println("connection to DB failed. Exiting...")
-		os.Exit(1)
-	}
-
-	InsertAccount(conn, newAccount)
-
+	menu()
 }
 
 func menu() {
@@ -35,18 +21,75 @@ func menu() {
 
 	switch action {
 	case 1:
-		// pass
+		entry := generateAcc()
+		fmt.Println("The new account and password was generated")
+		fmt.Printf("Your account number: %s\nYour password: %s", entry.AccNumber, entry.Password)
+
+		conn, err := EstablishConnectionDB()
+		if err != nil {
+			fmt.Println("connection to DB failed. Exiting...")
+			os.Exit(1)
+		}
+
+		err = InsertAccount(conn, entry)
+		if err != nil {
+			fmt.Println("adding the entry to database failed. Exiting...")
+		}
+
 	case 2:
 		// pass
+		// Extract list of account number and output it for user's choose
+		conn, err := EstablishConnectionDB()
+		if err != nil {
+			fmt.Println("connection to DB failed. Exiting...")
+			os.Exit(1)
+		}
+
+		rows, err := conn.Query(context.Background(), "select accnumber from accounts")
+		if err != nil {
+			fmt.Println("extracting list of accounts: ", err.Error())
+			os.Exit(1)
+		} else {
+			fmt.Printf("Type of rows: %T\n", rows)
+		}
+
 	default:
 		fmt.Println("Incorrect input. Please choose action (1-2)")
+		os.Exit(1)
 	}
 }
 
-func generateAcc() Entry {
-	var accountNumer [10]string
-	for _, digit := range accountNubmer {
-		randNum := rand.Intn(9)
-		digit := strconv.Itoa(randNum)
+func generateAcc() AccountEntry {
+	// Generating random account number (10 digits)
+	var accountNumber [10]string
+	for i := 0; i < 10; i++ {
+		rnd := rand.Intn(9)
+		accountNumber[i] = strconv.Itoa(rnd)
 	}
+
+	var accountNumberStr string
+	for i := 0; i < 10; i++ {
+		accountNumberStr += accountNumber[i]
+	}
+
+	// Generating password (30 sybmols)
+	var charset = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ~!@#$%^&*()_+"
+	var pswd [30]string
+
+	for i := 0; i < 30; i++ {
+		randInx := rand.Intn(len(charset) - 1)
+		pswd[i] = string(charset[randInx])
+	}
+
+	var pswdStr string
+	for i := 0; i < 30; i++ {
+		pswdStr += pswd[i]
+	}
+
+	entry := AccountEntry{
+		AccNumber: accountNumberStr,
+		Password:  pswdStr,
+	}
+
+	return entry
 }

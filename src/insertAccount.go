@@ -12,7 +12,9 @@ type AccountEntry struct {
 	Password  string
 }
 
-func InsertAccount(conn *pgx.Conn, entry AccountEntry) {
+func InsertAccount(conn *pgx.Conn, entry AccountEntry) error {
+	fmt.Println("Adding the entry to database...")
+
 	acc := entry.AccNumber
 	psw := entry.Password
 
@@ -36,5 +38,6 @@ func InsertAccount(conn *pgx.Conn, entry AccountEntry) {
 	}
 
 	defer conn.Close(context.Background())
-	fmt.Println("Database connection closed")
+	
+	return err
 }
