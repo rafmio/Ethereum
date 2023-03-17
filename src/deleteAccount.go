@@ -6,25 +6,22 @@ import (
 	"os"
 )
 
-func UpdatePassword(entry AccountEntry) {
+func DeleteEntry(accNumber string) {
 	conn, err := EstablishConnectionDB()
 	if err != nil {
 		fmt.Println("connection to DB failed. Exiting...")
 		os.Exit(1)
+	} else {
+		fmt.Println("connection to DB: Success")
 	}
-	acc := entry.AccNumber
-	psw := entry.Password
 
-	query := fmt.Sprintf("UPDATE accounts SET password = '%s' where accnumber = '%s';",
-		psw,
-		acc,
-	)
+	query := fmt.Sprintf("DELETE FROM accounts where accnumber = '%s';", accNumber)
 
 	_, err = conn.Exec(context.Background(), query)
 	if err != nil {
-		fmt.Println("updating data: ", err.Error())
+		fmt.Println("deleting account: ", err.Error())
 	} else {
-		fmt.Println("updating data: Success")
+		fmt.Println("deleting account: Success")
 	}
 
 	err = conn.Close(context.Background())
@@ -35,5 +32,4 @@ func UpdatePassword(entry AccountEntry) {
 	}
 
 	defer conn.Close(context.Background())
-	fmt.Println("Database connection closed")
 }

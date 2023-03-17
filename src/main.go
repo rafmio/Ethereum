@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"math/rand"
 	"os"
@@ -15,11 +14,9 @@ func main() {
 func menu() {
 	var action int
 	fmt.Println("Menu: ")
-	fmt.Printf("1. Create account\n2. Change password\n")
-	fmt.Printf("Choose action (1-2): ")
+	fmt.Printf("1. Create account\n2. Change password\n3. Delete account\n4. Show list of accouns\n")
+	fmt.Printf("Choose action (1-4): ")
 	fmt.Scanf("%d", &action)
-
-	var sqlResponse []string
 
 	switch action {
 	case 1:
@@ -41,49 +38,42 @@ func menu() {
 	case 2:
 		// pass
 		// Extract list of account number and output it for user's choose
-		conn, err := EstablishConnectionDB()
-		if err != nil {
-			fmt.Println("connection to DB failed. Exiting...")
-			os.Exit(1)
-		}
-
-		rows, err := conn.Query(context.Background(), "select accnumber from accounts;")
-		if err != nil {
-			fmt.Println("extracting list of accounts: ", err.Error())
-			os.Exit(1)
-		}
-
-		defer rows.Close()
-
-		for rows.Next() {
-			var accNumDB string
-			rows.Scan(&accNumDB)
-			sqlResponse = append(sqlResponse, accNumDB)
-		}
-
-		fmt.Println()
-		fmt.Printf("Please choose account to change password: 0 - %d\n", len(sqlResponse))
-		for i, val := range sqlResponse {
+		accounts := GetUsersWallets()
+		fmt.Printf("Please choose account to change password: 0 - %d\n", len(accounts))
+		for i, val := range accounts {
 			fmt.Println(i, " - ", val)
 		}
 
 		var answer int
 		fmt.Printf("Account to change password: ")
 		fmt.Scanf("%d", &answer)
-		fmt.Printf("You have chosen: %d - account #%s\n", answer, sqlResponse[answer])
+		fmt.Printf("You have chosen: %d - account #%s\n", answer, accounts[answer])
 		var newPassword string
 		fmt.Printf("Please enter a new password: ")
 		fmt.Scanf("%s", &newPassword)
-		updatedAccount := AccountEntry{AccNumber: sqlResponse[answer], Password: newPassword}
+		updatedAccount := AccountEntry{AccNumber: accounts[answer], Password: newPassword}
 
-		conn, err = EstablishConnectionDB()
-		if err != nil {
-			fmt.Println("connection to DB failed. Exiting...")
-			os.Exit(1)
+		UpdatePassword(updatedAccount)
+
+	case 3:
+		accounts := GetUsersWallets()
+		fmt.Printf("Choose account to delete: 0 - %d\n", len(accounts))
+		for i, val := range accounts {
+			fmt.Println(i, " - ", val)
 		}
 
-		UpdatePassword(conn, updatedAccount)
+		var answer int
+		fmt.Printf("Account to delete: ")
+		fmt.Scanf("%d", &answer)
+		fmt.Printf("You have chosen: %d - account #%s\n", answer, accounts[answer])
+		DeleteEntry(accounts[answer])
 
+	case 4:
+		accounts := GetUsersWallets()
+		fmt.Println("List of accounts: ")
+		for i, val := range accounts {
+			fmt.Println(i, " - ", val)
+		}
 	default:
 		fmt.Println("Incorrect input. Please choose action (1-2)")
 		os.Exit(1)
