@@ -19,6 +19,8 @@ func menu() {
 	fmt.Printf("Choose action (1-2): ")
 	fmt.Scanf("%d", &action)
 
+	var sqlResponse []string
+
 	switch action {
 	case 1:
 		entry := generateAcc()
@@ -51,6 +53,10 @@ func menu() {
 			os.Exit(1)
 		} else {
 			fmt.Printf("Type of rows: %T\n", rows)
+		}
+		err = rows.Scan(&sqlResponse1, &sqlResponse2)
+		if err != nil {
+			fmt.Println("scanning sql response: ", err.Error())
 		}
 
 	default:
