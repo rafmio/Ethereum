@@ -18,9 +18,9 @@ func UpdatePassword(conn *pgx.Conn, entry AccountEntry) {
 
 	_, err := conn.Exec(context.Background(), query)
 	if err != nil {
-		fmt.Println("updating entry: ", err.Error())
+		fmt.Println("connection to database: ", err.Error())
 	} else {
-		fmt.Println("updating entry: Success")
+		fmt.Println("connection to database: Success")
 	}
 
 	err = conn.Close(context.Background())

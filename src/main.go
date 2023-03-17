@@ -47,17 +47,42 @@ func menu() {
 			os.Exit(1)
 		}
 
-		rows, err := conn.Query(context.Background(), "select accnumber from accounts")
+		rows, err := conn.Query(context.Background(), "select accnumber from accounts;")
 		if err != nil {
 			fmt.Println("extracting list of accounts: ", err.Error())
 			os.Exit(1)
-		} else {
-			fmt.Printf("Type of rows: %T\n", rows)
 		}
-		err = rows.Scan(&sqlResponse1, &sqlResponse2)
+
+		defer rows.Close()
+
+		for rows.Next() {
+			var accNumDB string
+			rows.Scan(&accNumDB)
+			sqlResponse = append(sqlResponse, accNumDB)
+		}
+
+		fmt.Println()
+		fmt.Printf("Please choose account to change password: 0 - %d\n", len(sqlResponse))
+		for i, val := range sqlResponse {
+			fmt.Println(i, " - ", val)
+		}
+
+		var answer int
+		fmt.Printf("Account to change password: ")
+		fmt.Scanf("%d", &answer)
+		fmt.Printf("You have chosen: %d - account #%s\n", answer, sqlResponse[answer])
+		var newPassword string
+		fmt.Printf("Please enter a new password: ")
+		fmt.Scanf("%s", &newPassword)
+		updatedAccount := AccountEntry{AccNumber: sqlResponse[answer], Password: newPassword}
+
+		conn, err = EstablishConnectionDB()
 		if err != nil {
-			fmt.Println("scanning sql response: ", err.Error())
+			fmt.Println("connection to DB failed. Exiting...")
+			os.Exit(1)
 		}
+
+		UpdatePassword(conn, updatedAccount)
 
 	default:
 		fmt.Println("Incorrect input. Please choose action (1-2)")
