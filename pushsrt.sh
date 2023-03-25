@@ -7,7 +7,7 @@ if [[ $STATUS == *"$UPTODATE"* ]]; then
 else
 	git add .
 	DATETIME=$(date+'%d.%m.%Y %H:%M')
-	STRINGTOCOMMIT="Home PC $DATETIME"
+	STRINGTOCOMMIT="Home PC $(DATETIME)"
 	git commit -m "$STRINGTOCOMMIT"
 	git push
 fi
