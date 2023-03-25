@@ -1,5 +1,5 @@
 #!/bin/bash
-git pull > /div/null
+git pull > /dev/null
 STATUS=$(git status)
 UPTODATE="nothing to commit, working tree clean"
 if [[ $STATUS == *"$UPTODATE"* ]]; then
