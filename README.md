@@ -17,7 +17,6 @@ Account  == just created wallet
 The password must be stored at PostgreSQL database
 The password must be stored as a hash
 
-
 Creating account (wallet) - Issue #1
 
 Optional:
